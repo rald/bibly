@@ -46,17 +46,23 @@ int main() {
 	printf(PROMPT);
 
   while((rlen=getline(&line,&llen,stdin))!=-1) {
-    Array *tokens=Array_New(0,Token*);
-    Array *cites=Array_New(0,Cite*);
+    trim(line);
 
-		lex(tokens,line);
+    if(strlen(line)>0) {
 
-		parse(infos,tokens,cites);
+      Array *tokens=Array_New(0,Token*);
+      Array *cites=Array_New(0,Cite*);
 
-		Cites_Print(infos,cites);
+  		tokens=lex(line);
 
-		Array_Free(&tokens,Token_Free);
-		Array_Free(&cites,Cite_Free);
+  		cites=parse(infos,tokens);
+
+  		Cites_Print(infos,cites);
+
+  		Array_Free(&tokens,Token_Free);
+  		Array_Free(&cites,Cite_Free);
+
+    }
 
 		free(line);
 		line=NULL;

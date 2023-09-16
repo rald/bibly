@@ -27,7 +27,7 @@ typedef enum LexerState {
 
 
 
-void lex(Array *tokens,char *str);
+Array *lex(char *str);
 
 
 
@@ -35,7 +35,9 @@ void lex(Array *tokens,char *str);
 
 
 
-void lex(Array *tokens,char *str) {
+Array *lex(char *str) {
+
+  Array *tokens=Array_New(0,Token*);
 
   LexerState lexerState=LEXERSTATE_DEFAULT;
 
@@ -92,6 +94,8 @@ void lex(Array *tokens,char *str) {
   }
 
   Token_Append(tokens,TOKENTYPE_EOF,NULL);
+
+  return tokens;
 }
 
 

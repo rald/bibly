@@ -68,7 +68,9 @@ void Array_Free(Array **array,FnFree *fnFree) {
   int i;
   if(*array) {
     for(i=0;i<(*array)->n;i++) {
-      if((*array)->d[i]) fnFree(&(*array)->d[i]);
+      if((*array)->d && (*array)->d[i]) {
+        fnFree(&(*array)->d[i]);
+      }
     }
     (*array)->n=0;
     free(*array);

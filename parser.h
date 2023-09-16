@@ -19,7 +19,7 @@
 #include "array.h"
 
 
-void parse(Array *infos,Array *tokens,Array *cites);
+Array *parse(Array *infos,Array *tokens);
 
 
 
@@ -176,7 +176,10 @@ void p0(Array *infos,Array *tokens,Array *cites) {
 
 
 
-void parse(Array *infos,Array *tokens,Array *cites) {
+Array *parse(Array *infos,Array *tokens) {
+
+  Array *cites=Array_New(0,Cite*);
+
 	i=0;
 
 	cite=Cite_New(0,0,0,0,0);
@@ -184,6 +187,8 @@ void parse(Array *infos,Array *tokens,Array *cites) {
 	p0(infos,tokens,cites);
 
 	Cite_Free((void**)&cite);
+
+	return cites;
 }
 
 
