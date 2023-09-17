@@ -67,7 +67,7 @@ void Tokens_Free(Token ***tokens,size_t *ntokens) {
     }
     (*tokens)[i]->text=NULL;
     free((*tokens)[i]);
-    (*tokens)[i]=NULL;    
+    (*tokens)[i]=NULL;
   }
   free(*tokens);
   *tokens=NULL;

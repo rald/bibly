@@ -20,7 +20,7 @@
 #include "cite.h"
 
 
-int main(int argc,char *argv[]) {
+int main(int argc,char **argv) {
 
 	Info **infos=NULL;
 	size_t ninfos=0;
@@ -30,6 +30,8 @@ int main(int argc,char *argv[]) {
 
 	Cite **cites=NULL;
 	size_t ncites=0;
+
+  int i;
 
 	Info_Load(&infos,&ninfos,"kjv.inf");
 
