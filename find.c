@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <sys/types.h>
+
 
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"

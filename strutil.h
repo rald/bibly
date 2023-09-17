@@ -39,7 +39,7 @@ void tokenize(char ***tokens,size_t *ntokens,char *s,char *d) {
   char *token=strtok(s,d);
   while(token) {
     *tokens=realloc(*tokens,sizeof(**tokens)*(*ntokens+1));
-    (*tokens)[(*ntokens)++]=token?strdup(token):NULL;
+    (*tokens)[(*ntokens)++]=strdup(token);
     token=strtok(NULL,d);
   }
 }

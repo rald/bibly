@@ -8,3 +8,7 @@ pick: pick.c strutil.h
 
 find: find.c strutil.h
 	gcc find.c -o find -O3 -g --std=c89
+
+clean:
+	rm bibly pick find
+
