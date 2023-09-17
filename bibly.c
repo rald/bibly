@@ -20,7 +20,7 @@
 #include "cite.h"
 
 
-int main() {
+int main(int argc,char *argv[]) {
 
 	Info **infos=NULL;
 	size_t ninfos=0;
@@ -33,15 +33,9 @@ int main() {
 
 	Info_Load(&infos,&ninfos,"kjv.inf");
 
-	char *line=NULL;
-	size_t llen=0;
-	ssize_t rlen=0;
+  for(i=1;i<argc;i++) {
 
-	printf("> ");
-
-	while((rlen=getline(&line,&llen,stdin))!=-1) {
-
-		lex(&tokens,&ntokens,line);
+		lex(&tokens,&ntokens,argv[i]);
 
 		parse(infos,ninfos,tokens,ntokens,&cites,&ncites);
 
@@ -50,18 +44,7 @@ int main() {
 		Tokens_Free(&tokens,&ntokens);
 		Cites_Free(&cites,&ncites);
 
-		free(line);
-		line=NULL;
-		llen=0;
-		rlen=0;
-
-		printf("> ");
 	}
-
-	free(line);
-	line=NULL;
-	llen=0;
-	rlen=0;
 
 	Infos_Free(&infos,&ninfos);
 
