@@ -15,6 +15,8 @@ int main(int argc,char **argv) {
 	ssize_t rlen=0;
 	FILE *fin=NULL;
 	size_t i;
+	char **t=NULL;
+	size_t nt=0;
 
   if(argc<2) {
     printf("syntax: %s \"search text\"",argv[0]);
@@ -28,13 +30,13 @@ int main(int argc,char **argv) {
     for(i=1;i<argc;i++) {
       if(strcasestr(line,argv[i])) {
 
-      	Array *t=NULL;
+        char *line2=strdup(line);
 
-      	t=tokenize(line,"|");
+      	tokenize(&t,&nt,line,"|");
 
-      	printf("%s %s:%s -> %s\n",A(t,0,char*),A(t,1,char*),A(t,2,char*),A(t,3,char*));
+      	printf("%s %s:%s -> %s\n",t[0],t[1],t[2],t[3]);
 
-        Array_Free(&t,tokfree);
+        tokfree(&t,&nt);
 
         break;
       }

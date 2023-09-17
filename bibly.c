@@ -4,15 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
-#define PROMPT "> "
-
-
-
-#define DIE_IMPLEMENTATION
-#include "die.h"
-
 #define INFO_IMPLEMENTATION
 #include "info.h"
 
@@ -28,48 +19,43 @@
 #define CITE_IMPLEMENTATION
 #include "cite.h"
 
-#define ARRAY_IMPLEMENTATION
-#include "array.h"
-
-
 
 int main() {
 
-  Array *infos=Array_New(0,Info*);
+	Info **infos=NULL;
+	size_t ninfos=0;
 
-	Info_Load(infos,"kjv.inf");
+	Token **tokens=NULL;
+	size_t ntokens=0;
+
+	Cite **cites=NULL;
+	size_t ncites=0;
+
+	Info_Load(&infos,&ninfos,"kjv.inf");
 
 	char *line=NULL;
 	size_t llen=0;
 	ssize_t rlen=0;
 
-	printf(PROMPT);
+	printf("> ");
 
-  while((rlen=getline(&line,&llen,stdin))!=-1) {
-    trim(line);
+	while((rlen=getline(&line,&llen,stdin))!=-1) {
 
-    if(strlen(line)>0) {
+		lex(&tokens,&ntokens,line);
 
-      Array *tokens=Array_New(0,Token*);
-      Array *cites=Array_New(0,Cite*);
+		parse(infos,ninfos,tokens,ntokens,&cites,&ncites);
 
-  		tokens=lex(line);
+		Cites_Print(infos,ninfos,cites,ncites);
 
-  		cites=parse(infos,tokens);
-
-  		Cites_Print(infos,cites);
-
-  		Array_Free(&tokens,Token_Free);
-  		Array_Free(&cites,Cite_Free);
-
-    }
+		Tokens_Free(&tokens,&ntokens);
+		Cites_Free(&cites,&ncites);
 
 		free(line);
 		line=NULL;
 		llen=0;
 		rlen=0;
 
-		printf(PROMPT);
+		printf("> ");
 	}
 
 	free(line);
@@ -77,7 +63,7 @@ int main() {
 	llen=0;
 	rlen=0;
 
-	Array_Free(&infos,Info_Free);
+	Infos_Free(&infos,&ninfos);
 
 	return 0;
 }

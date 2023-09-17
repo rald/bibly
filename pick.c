@@ -6,9 +6,6 @@
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"
 
-#define ARRAY_IMPLEMENTATION
-#include "array.h"
-
 double drand() {
 	return rand()/(1.0+RAND_MAX);
 }
@@ -25,7 +22,8 @@ int main(void) {
 
 	size_t n=0;
 
-  Array *t=NULL;
+  char **t=NULL;
+  size_t nt=0;
 
 
 	char *sel=NULL;
@@ -50,11 +48,12 @@ int main(void) {
 	llen=0;
 	rlen=0;
 
-	t=tokenize(sel,"|");
 
-	printf("%s %s:%s -> %s\n",A(t,0,char*),A(t,1,char*),A(t,2,char*),A(t,3,char*));
+	tokenize(&t,&nt,sel,"|");
 
-  Array_Free(&t,tokfree);
+	printf("%s %s:%s -> %s\n",t[0],t[1],t[2],t[3]);
+
+  tokfree(&t,&nt);
 
 	free(sel);
 

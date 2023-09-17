@@ -3,9 +3,6 @@
 
 #include "common.h"
 
-#define DIE_IMPLEMENTATION
-#include "die.h"
-
 typedef enum TokenType {
   TOKENTYPE_UNKNOWN=0,
   TOKENTYPE_STRING,
@@ -39,9 +36,9 @@ struct Token {
 
 Token *Token_New(TokenType type,char *text);
 
-void Token_Free(void **token);
+void Tokens_Free(Token ***tokens,size_t *ntokens);
 
-void Token_Append(Array *token,TokenType type,char *text);
+void Token_Append(Token ***tokens,size_t *ntokens,TokenType type,char *text);
 
 char *Token_ToString(Token *token);
 
@@ -56,25 +53,32 @@ Token *Token_New(TokenType type,char *text) {
   if(token) {
     token->type=type;
     token->text=text?strdup(text):NULL;
-  } else {
-    die(1,"Error: Token_New: malloc");
   }
   return token;
 }
 
 
 
-void Token_Free(void **token) {
-  free(((Token*)token)->text);
-  ((Token*)token)->text=NULL;
-  free(*token);
-  *token=NULL;
+void Tokens_Free(Token ***tokens,size_t *ntokens) {
+  size_t i;
+  for(i=0;i<*ntokens;i++) {
+    if((*tokens)[i]->text) {
+      free((*tokens)[i]->text);
+    }
+    (*tokens)[i]->text=NULL;
+    free((*tokens)[i]);
+    (*tokens)[i]=NULL;    
+  }
+  free(*tokens);
+  *tokens=NULL;
+  *ntokens=0;
 }
 
 
 
-void Token_Append(Array *tokens,TokenType type,char *text) {
-  Array_Push(tokens,Token_New(type,text),Token*);
+void Token_Append(Token ***tokens,size_t *ntokens,TokenType type,char *text) {
+  (*tokens)=realloc(*tokens,sizeof(**tokens)*((*ntokens)+1));
+  (*tokens)[(*ntokens)++]=Token_New(type,text);
 }
 
 
@@ -83,7 +87,6 @@ char *Token_ToString(Token *token) {
   sprintf(str,"{ type: %s, text: \"%s\" }",tokenNames[token->type],token->text);
   return str;
 }
-
 
 
 #endif /* TOKEN_IMPLEMENTATION */

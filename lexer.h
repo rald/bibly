@@ -12,22 +12,18 @@
 #define TOKEN_IMPLEMENTATION
 #include "token.h"
 
-#define ARRAY_IMPLEMENTATION
-#include "array.h"
-
-
 
 
 typedef enum LexerState {
   LEXERSTATE_DEFAULT=0,
   LEXERSTATE_STRING,
   LEXERSTATE_INTEGER,
-  LEXERSTATE_MAX,
+  LEXERSTATE_MAX,  
 } LexerState;
 
 
 
-Array *lex(char *str);
+void lex(Token ***tokens,size_t *ntokens,char *str);
 
 
 
@@ -35,9 +31,7 @@ Array *lex(char *str);
 
 
 
-Array *lex(char *str) {
-
-  Array *tokens=Array_New(0,Token*);
+void lex(Token ***tokens,size_t *ntokens,char *str) {
 
   LexerState lexerState=LEXERSTATE_DEFAULT;
 
@@ -61,18 +55,18 @@ Array *lex(char *str) {
           lexerState=LEXERSTATE_INTEGER;
           i--;
         } else if(c==':') {
-          Token_Append(tokens,TOKENTYPE_COLON,(char[2]){c,'\0'});
+          Token_Append(tokens,ntokens,TOKENTYPE_COLON,(char[2]){c,'\0'});     
         } else if(c=='-') {
-          Token_Append(tokens,TOKENTYPE_DASH,(char[2]){c,'\0'});
+          Token_Append(tokens,ntokens,TOKENTYPE_DASH,(char[2]){c,'\0'});     
         } else if(c==',') {
-          Token_Append(tokens,TOKENTYPE_COMMA,(char[2]){c,'\0'});
+          Token_Append(tokens,ntokens,TOKENTYPE_COMMA,(char[2]){c,'\0'});     
         }
       break;
       case LEXERSTATE_STRING:
         if(c!='\0' && (isalpha(c) || isspace(c))) {
           strcat(text,(char[2]){c,'\0'});
         } else {
-          Token_Append(tokens,TOKENTYPE_STRING,trim(text));
+          Token_Append(tokens,ntokens,TOKENTYPE_STRING,trim(text));
           text[0]='\0';
           i--;
           lexerState=LEXERSTATE_DEFAULT;
@@ -82,7 +76,7 @@ Array *lex(char *str) {
         if(c!='\0' && isdigit(c)) {
           strcat(text,(char[2]){c,'\0'});
         } else {
-          Token_Append(tokens,TOKENTYPE_INTEGER,text);
+          Token_Append(tokens,ntokens,TOKENTYPE_INTEGER,text);
           text[0]='\0';
           i--;
           lexerState=LEXERSTATE_DEFAULT;
@@ -93,9 +87,7 @@ Array *lex(char *str) {
     i++;
   }
 
-  Token_Append(tokens,TOKENTYPE_EOF,NULL);
-
-  return tokens;
+  Token_Append(tokens,ntokens,TOKENTYPE_EOF,NULL);  
 }
 
 
@@ -105,5 +97,3 @@ Array *lex(char *str) {
 
 
 #endif /* LEXER_H */
-
-
