@@ -5,6 +5,7 @@
 #include <time.h>
 #include <sys/types.h>
 
+#include "common.h"
 
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"
@@ -25,7 +26,7 @@ int main(int argc,char **argv) {
     return 1;
   }
 
-	fin=fopen("kjv.csv","r");
+	fin=fopen(CSV_FILE,"r");
 
 	while((rlen=getline(&line,&llen,fin))!=-1) {
 

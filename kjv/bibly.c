@@ -33,7 +33,7 @@ int main(int argc,char **argv) {
 
   int i;
 
-	Info_Load(&infos,&ninfos,"kjv.inf");
+	Info_Load(&infos,&ninfos,INFO_FILE);
 
   for(i=1;i<argc;i++) {
 

@@ -39,15 +39,7 @@ void p3(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,s
 
   while(i<ntokens && tokens[i]->type==TOKENTYPE_COMMA) {
     i+=1;
-    if(i<ntokens && tokens[i]->type==TOKENTYPE_STRING) {    
-      cite->bnum=0;
-      cite->scnum=0;
-      cite->ecnum=0;
-      cite->svnum=0;
-      cite->evnum=0;
-      
-      p0(infos,ninfos,tokens,ntokens,cites,ncites);
-    } else if(i+1<ntokens && tokens[i]->type==TOKENTYPE_INTEGER && tokens[i+1]->type==TOKENTYPE_STRING) {          
+    if(i<ntokens && tokens[i]->type==TOKENTYPE_STRING) {
       cite->bnum=0;
       cite->scnum=0;
       cite->ecnum=0;
@@ -55,7 +47,15 @@ void p3(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,s
       cite->evnum=0;
 
       p0(infos,ninfos,tokens,ntokens,cites,ncites);
-    } else if(i+1<ntokens && tokens[i]->type==TOKENTYPE_INTEGER  && tokens[i+1]->type==TOKENTYPE_COLON) {          
+    } else if(i+1<ntokens && tokens[i]->type==TOKENTYPE_INTEGER && tokens[i+1]->type==TOKENTYPE_STRING) {
+      cite->bnum=0;
+      cite->scnum=0;
+      cite->ecnum=0;
+      cite->svnum=0;
+      cite->evnum=0;
+
+      p0(infos,ninfos,tokens,ntokens,cites,ncites);
+    } else if(i+1<ntokens && tokens[i]->type==TOKENTYPE_INTEGER  && tokens[i+1]->type==TOKENTYPE_COLON) {
       cite->scnum=0;
       cite->ecnum=0;
       cite->svnum=0;
@@ -64,16 +64,16 @@ void p3(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,s
       p1(infos,ninfos,tokens,ntokens,cites,ncites);
 
       Cite_Append(cites,ncites,Cite_New(cite->bnum,cite->scnum,cite->ecnum,cite->svnum,cite->evnum));
-      
-    } else if(i<ntokens && tokens[i]->type==TOKENTYPE_INTEGER) {          
+
+    } else if(i<ntokens && tokens[i]->type==TOKENTYPE_INTEGER) {
 
       cite->ecnum=0;
       cite->svnum=0;
       cite->evnum=0;
 
-      p2(infos,ninfos,tokens,ntokens,cites,ncites);      
+      p2(infos,ninfos,tokens,ntokens,cites,ncites);
       Cite_Append(cites,ncites,Cite_New(cite->bnum,cite->scnum,cite->ecnum,cite->svnum,cite->evnum));
-    } 
+    }
 
   }
 }
@@ -81,23 +81,23 @@ void p3(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,s
 
 void p2(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,size_t *ncites) {
   if(tokens[i]->type!=TOKENTYPE_EOF) {
-    if( 
-        i+2<ntokens 
+    if(
+        i+2<ntokens
         && tokens[i]->type==TOKENTYPE_INTEGER
         && tokens[i+1]->type==TOKENTYPE_DASH
         && tokens[i+2]->type==TOKENTYPE_INTEGER
     ) {
       cite->svnum=atoi(tokens[i]->text);
       cite->evnum=atoi(tokens[i+2]->text);
-      i+=3;    
-    } else if (  
-        i<ntokens 
+      i+=3;
+    } else if (
+        i<ntokens
         && tokens[i]->type==TOKENTYPE_INTEGER
     ) {
-      cite->svnum=atoi(tokens[i]->text);      
+      cite->svnum=atoi(tokens[i]->text);
       cite->evnum=0;
       i+=1;
-    } 
+    }
   }
 }
 
@@ -105,20 +105,20 @@ void p2(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,s
 
 void p1(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,size_t *ncites) {
   if(tokens[i]->type!=TOKENTYPE_EOF) {
-    if( 
-        i+2<ntokens 
+    if(
+        i+2<ntokens
         && tokens[i]->type==TOKENTYPE_INTEGER
         && tokens[i+1]->type==TOKENTYPE_DASH
         && tokens[i+2]->type==TOKENTYPE_INTEGER
     ) {
       cite->scnum=atoi(tokens[i]->text);
-      cite->ecnum=atoi(tokens[i+2]->text);  
-      i+=3;    
-    } else if (  
-        i<ntokens 
+      cite->ecnum=atoi(tokens[i+2]->text);
+      i+=3;
+    } else if (
+        i<ntokens
         && tokens[i]->type==TOKENTYPE_INTEGER
     ) {
-      cite->scnum=atoi(tokens[i]->text);      
+      cite->scnum=atoi(tokens[i]->text);
       cite->ecnum=0;
       i+=1;
 
@@ -126,15 +126,15 @@ void p1(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,s
         i+=1;
         p2(infos,ninfos,tokens,ntokens,cites,ncites);
       }
-    } 
-  }  
+    }
+  }
 }
 
 
 
 void p0(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,size_t *ncites) {
 
-  if(tokens[i]->type!=TOKENTYPE_EOF) {  
+  if(tokens[i]->type!=TOKENTYPE_EOF) {
 
 		if(i<ntokens && tokens[i]->type==TOKENTYPE_COMMA) {
 			p3(infos,ninfos,tokens,ntokens,cites,ncites);
@@ -148,10 +148,10 @@ void p0(Info **infos,size_t ninfos,Token **tokens,size_t ntokens,Cite ***cites,s
 	      strcpy(bname,tokens[i]->text);
 	      i+=1;
 	    } else if(i+1<ntokens && tokens[i]->type==TOKENTYPE_INTEGER && tokens[i+1]->type==TOKENTYPE_STRING) {
-	      sprintf(bname,"%s %s",tokens[i]->text,tokens[i+1]->text);  
+	      sprintf(bname,"%s %s",tokens[i]->text,tokens[i+1]->text);
 	      i+=2;
-	    } 
-	    
+	    }
+
 	    if((cite->bnum=getbnum(infos,ninfos,bname))) {
 
 	      p1(infos,ninfos,tokens,ntokens,cites,ncites);

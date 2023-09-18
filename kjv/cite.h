@@ -7,6 +7,8 @@
 
 
 
+#include "common.h"
+
 #define INFO_IMPLEMENTATION
 #include "info.h"
 
@@ -25,7 +27,7 @@ struct Cite {
   size_t scnum;
   size_t ecnum;
   size_t svnum;
-  size_t evnum;  
+  size_t evnum;
 };
 
 
@@ -90,7 +92,7 @@ void Cite_Append(Cite ***cites,size_t *ncites,Cite *cite) {  *cites=realloc(*cit
 
 void Cite_Print(Info **infos,size_t ninfos,Cite *cite) {
 
-  FILE *fp=fopen("kjv.csv","r");
+  FILE *fp=fopen(CSV_FILE,"r");
 
   char *line=NULL;
   size_t llen=0;
@@ -140,7 +142,7 @@ void Cite_Print(Info **infos,size_t ninfos,Cite *cite) {
 	rlen=0;
 
 	fclose(fp);
- 
+
 }
 
 

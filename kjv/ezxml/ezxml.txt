@@ -40,6 +40,7 @@ for (team = ezxml_child(f1, "team"); team; team = team->next) {
 }
 ezxml_free(f1);
 
+
 Alternately, the following would print out the name of the second driver on the
 first team:
 

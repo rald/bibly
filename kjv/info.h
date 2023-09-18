@@ -29,7 +29,7 @@ void Info_Append(Info ***infos,size_t *ninfos,Info *info);
 
 void Info_Load(Info ***infos,size_t *ninfos,char *filename);
 
-void Info_Print(Info **infos,size_t ninfos);
+void Infos_Print(Info **infos,size_t ninfos);
 
 
 
@@ -95,32 +95,38 @@ void Info_Load(Info ***infos,size_t *ninfos,char *filename) {
 
   while((rlen=getline(&line,&llen,fp))!=-1) {
 
-	  char **tokens0=NULL;
-	  size_t ntokens0=0;
-	  char **tokens1=NULL;
-	  size_t ntokens1=0;
+    trim(line);
 
-    tokenize(&tokens0,&ntokens0,line,"|");
+    if(strlen(line)>0) {
 
-    Info *info=Info_New();
+  	  char **tokens0=NULL;
+  	  size_t ntokens0=0;
+  	  char **tokens1=NULL;
+  	  size_t ntokens1=0;
 
-    info->bname=strdup(tokens0[0]);
+      tokenize(&tokens0,&ntokens0,line,"|");
+      Info *info=Info_New();
 
-    tokenize(&info->bsnames,&info->nbsnames,tokens0[1],"/");
-    info->bnum=atoi(tokens0[2]);
-    info->nchap=atoi(tokens0[3]);
+      info->bname=strdup(tokens0[0]);
 
-    tokenize(&tokens1,&ntokens1,tokens0[4],",");
-    info->nvers=malloc(sizeof(*info->nvers)*info->nchap);
+      tokenize(&info->bsnames,&info->nbsnames,tokens0[1],"/");
 
-    for(i=0;i<info->nchap;i++) {
-      info->nvers[i]=atoi(tokens1[i]);
+      info->bnum=atoi(tokens0[2]);
+      info->nchap=atoi(tokens0[3]);
+
+      tokenize(&tokens1,&ntokens1,tokens0[4],",");
+      info->nvers=malloc(sizeof(*info->nvers)*info->nchap);
+
+      for(i=0;i<info->nchap;i++) {
+        info->nvers[i]=atoi(tokens1[i]);
+      }
+
+      Info_Append(infos,ninfos,info);
+
+      tokfree(&tokens1,&ntokens1);
+      tokfree(&tokens0,&ntokens0);
+
     }
-
-    Info_Append(infos,ninfos,info);
-
-    tokfree(&tokens1,&ntokens1);
-    tokfree(&tokens0,&ntokens0);
 
 		free(line);
 	 	line=NULL;
@@ -139,7 +145,7 @@ void Info_Load(Info ***infos,size_t *ninfos,char *filename) {
 
 
 
-void Info_Print(Info **infos,size_t ninfos) {
+void Infos_Print(Info **infos,size_t ninfos) {
   size_t i,j;
   for(i=0;i<ninfos;i++) {
     printf("%s|",infos[i]->bname);
@@ -161,7 +167,8 @@ void Info_Print(Info **infos,size_t ninfos) {
 
 
 
-#endif /* IMFO_H */
+#endif /* INFO_H */
+
 
 
 
