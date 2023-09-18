@@ -14,11 +14,11 @@ double drand() {
 	return rand()/(1.0+RAND_MAX);
 }
 
-int main(void) {
+int main(int argc,char *argv[]) {
 
 	srand(time(NULL));
 
-	FILE *fin=NULL;
+	FILE *fp=NULL;
 
 	char *line=NULL;
 	size_t llen=0;
@@ -29,38 +29,49 @@ int main(void) {
   char **t=NULL;
   size_t nt=0;
 
-
 	char *sel=NULL;
 
-	fin=fopen(CSV_FILE,"r");
+  size_t i,c=1;
 
-	while((rlen=getline(&line,&llen,fin))!=-1) {
+  if(argc==2) c=atoi(argv[1]);
 
-		if(drand()<1.0/++n) {
-			if(sel!=NULL) free(sel);
-			sel=strdup(line);
-		}
+  for(i=0;i<c;i++) {
 
-		free(line);
-		line=NULL;
-		llen=0;
-		rlen=0;
-	}
+  	fp=fopen(CSV_FILE,"r");
 
-	free(line);
-	line=NULL;
-	llen=0;
-	rlen=0;
+    n=0;
 
+  	while((rlen=getline(&line,&llen,fp))!=-1) {
 
-	tokenize(&t,&nt,sel,"|");
+  		if(drand()<1.0/++n) {
+  			if(sel!=NULL) free(sel);
+  			sel=strdup(line);
+  		}
 
-	printf("%s %s:%s -> %s\n",t[0],t[1],t[2],t[3]);
+  		free(line);
+  		line=NULL;
+  		llen=0;
+  		rlen=0;
+  	}
 
-  tokfree(&t,&nt);
+  	free(line);
+  	line=NULL;
+  	llen=0;
+  	rlen=0;
 
-	free(sel);
+  	tokenize(&t,&nt,sel,"|");
+
+  	printf("%s %s:%s -> %s\n",t[0],t[1],t[2],t[3]);
+
+    tokfree(&t,&nt);
+
+  	free(sel);
+    sel=NULL;
+
+    fclose(fp);
+  }
 
 	return 0;
 }
+
 
