@@ -4,8 +4,12 @@
 #include <string.h>
 #include <time.h>
 #include <sys/types.h>
+#include <errno.h>
 
 #include "common.h"
+
+#define DIE_IMPLEMENTATION
+#include "die.h"
 
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"
@@ -16,7 +20,7 @@ int main(int argc,char **argv) {
 	char *line=NULL;
 	size_t llen=0;
 	ssize_t rlen=0;
-	FILE *fin=NULL;
+	FILE *fp=NULL;
 	size_t i;
 	char **t=NULL;
 	size_t nt=0;
@@ -26,9 +30,11 @@ int main(int argc,char **argv) {
     return 1;
   }
 
-	fin=fopen(CSV_FILE,"r");
+	if((fp=fopen(CSV_FILE,"r"))==NULL) {
+    die(1,"main: fopen: %s",strerror(errno));
+	}
 
-	while((rlen=getline(&line,&llen,fin))!=-1) {
+	while((rlen=getline(&line,&llen,fp))!=-1) {
 
     for(i=1;i<argc;i++) {
       if(strcasestr(line,argv[i])) {

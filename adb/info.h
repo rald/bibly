@@ -1,7 +1,15 @@
 #ifndef INFO_H
 #define INFO_H
 
+#define _GNU_SOURCE
 
+#include <string.h>
+#include <errno.h>
+
+#include "common.h"
+
+#define DIE_IMPLEMENTATION
+#include "die.h"
 
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"
@@ -85,13 +93,18 @@ void Info_Append(Info ***infos,size_t *ninfos,Info *info) {
 
 
 void Info_Load(Info ***infos,size_t *ninfos,char *filename) {
-  FILE *fp=fopen(filename,"r");
+  FILE *fp=NULL;
 
   char *line=NULL;
   size_t llen=0;
   ssize_t rlen=0;
 
   size_t i;
+
+  if((fp=fopen(filename,"r"))==NULL) {
+    die(1,"Info_Load: fopen: %s",strerror(errno));
+  }
+
 
   while((rlen=getline(&line,&llen,fp))!=-1) {
 

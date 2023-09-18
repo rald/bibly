@@ -3,9 +3,13 @@
 
 #define _GNU_SOURCE
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <errno.h>
 #include <sys/types.h>
+#include <errno.h>
 
 #define INFO_IMPLEMENTATION
 #include "info.h"
@@ -60,7 +64,11 @@ void search(char *text) {
 
  	if(text && *text) {
 
-		FILE *fp=fopen("kjv.csv","r");
+		FILE *fp=NULL;
+
+		if((fp=fopen(CSV_FILE,"r"))==NULL) {
+      die(1,"search: fopen: %s",strerror(errno));
+		}
 
 		char *line=NULL;
 		size_t llen=0;

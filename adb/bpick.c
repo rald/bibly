@@ -4,8 +4,12 @@
 #include <string.h>
 #include <time.h>
 #include <sys/types.h>
+#include <errno.h>
 
 #include "common.h"
+
+#define DIE_IMPLEMENTATION
+#include "die.h"
 
 #define STRUTIL_IMPLEMENTATION
 #include "strutil.h"
@@ -37,7 +41,9 @@ int main(int argc,char *argv[]) {
 
   for(i=0;i<c;i++) {
 
-  	fp=fopen(CSV_FILE,"r");
+  	if((fp=fopen(CSV_FILE,"r"))==NULL) {
+      die(1,"main: fopen: %s\n",strerror(errno));
+  	}
 
     n=0;
 
