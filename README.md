@@ -9,17 +9,16 @@ chapter span: jn1-3
 verse span:   jn3:16-20
 verse hop:    jn3:16,18,20
 
-any combination of the 
-above separated by commas
+any combination of the above separated by commas.
 
 # bfind
 
 syntax: ./bfind "search1" "search2" ... "search3"
 
-searches for text
+searches for texts.
 
 # bpick
 
-syntax: ./bpick
+syntax: ./bpick <count>
 
-displays a random bible verse
+displays random bible verse count times.
