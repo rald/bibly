@@ -1,6 +1,8 @@
 #ifndef CITE_H
 #define CITE_H
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -8,6 +10,9 @@
 
 
 #include "common.h"
+
+#define DIE_IMPLEMENTATION
+#include "die.h"
 
 #define INFO_IMPLEMENTATION
 #include "info.h"
@@ -92,7 +97,11 @@ void Cite_Append(Cite ***cites,size_t *ncites,Cite *cite) {  *cites=realloc(*cit
 
 void Cite_Print(Info **infos,size_t ninfos,Cite *cite) {
 
-  FILE *fp=fopen(CSV_FILE,"r");
+  FILE *fp=NULL;
+
+  if((fp=fopen(CSV_FILE,"r"))==NULL) {
+    die(1,"Cite_Print: fopen: %s\n",strerror(errno));
+  }
 
   char *line=NULL;
   size_t llen=0;
