@@ -26,5 +26,5 @@ displays random bible verse count times.
 
 # bible versions
 
-adb -> tagalog: Ang Dating Biblia
-kjv -> english: King James Version
+adb -> tagalog: Ang Dating Biblia  
+kjv -> english: King James Version  
