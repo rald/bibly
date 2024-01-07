@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <ctype.h>
 
+#include "common.h"
+
 #define INFO_IMPLEMENTATION
 #include "info.h"
 
@@ -19,6 +21,7 @@
 
 #define CITE_IMPLEMENTATION
 #include "cite.h"
+
 
 
 int main(int argc,char **argv) {
