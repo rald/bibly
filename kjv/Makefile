@@ -1,14 +1,15 @@
-all: bibly bpick bfind
+all: kjv pkjv skjv
 
-bibly: bibly.c common.h die.h strutil.h util.h info.h token.h lexer.h cite.h parser.h
-	gcc bibly.c -o bibly -O3 -g --std=c89
+kjv: bibly.c common.h die.h strutil.h util.h info.h token.h lexer.h cite.h parser.h
+	gcc bibly.c -o kjv -O3 -g --std=c89
 
-bpick: bpick.c common.h die.h strutil.h
-	gcc bpick.c -o bpick -O3 -g --std=c89
+pkjv: bpick.c common.h die.h strutil.h
+	gcc bpick.c -o pkjv -O3 -g --std=c89
 
-bfind: bfind.c common.h die.h strutil.h
-	gcc bfind.c -o bfind -O3 -g --std=c89
+skjv: bfind.c common.h die.h strutil.h
+	gcc bfind.c -o skjv -O3 -g --std=c89
 
 clean:
-	rm bibly bpick bfind
+	rm kjv pkjv skjv
+
 
